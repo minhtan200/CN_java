@@ -1,0 +1,4 @@
+
+module frmQLCafe {
+	requires java.desktop;
+} 

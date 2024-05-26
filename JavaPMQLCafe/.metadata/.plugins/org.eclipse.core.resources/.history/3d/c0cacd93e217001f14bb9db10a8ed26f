@@ -1,0 +1,278 @@
+package frmQLCafe;
+
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JTable;
+import javax.swing.JButton;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.Serializable;
+import java.sql.*;
+import java.util.Vector;
+
+import java.awt.Rectangle;
+
+
+public class frmQuanLySanPham extends JFrame implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    private JTextField txtTenSanPham;
+    private JTextField txtGia;
+    private JTable tableSanPham;
+
+    private static final String URL = "jdbc:mysql://localhost:3306/cafe";
+    private static final String USER = "root";  // Thay thế bằng tên người dùng MySQL của bạn
+    private static final String PASSWORD = "";  // Thay thế bằng mật khẩu MySQL của bạn
+    private JTextField textField;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    frmQuanLySanPham window = new frmQuanLySanPham();
+                    window.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public frmQuanLySanPham() {
+        getContentPane().setBackground(new Color(255, 255, 255));
+        initialize();
+        loadDataToTable();
+    }
+
+    private void initialize() {
+        getContentPane().setBackground(new Color(255, 255, 255));
+        setBounds(100, 100, 803, 546);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(Color.BLACK);
+        panel.setBounds(-1, 0, 790, 51);
+        getContentPane().add(panel);
+
+        JLabel lblSnPhm = new JLabel("SẢN PHẨM ");
+        lblSnPhm.setForeground(Color.WHITE);
+        lblSnPhm.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblSnPhm.setBounds(342, 10, 117, 31);
+        panel.add(lblSnPhm);
+
+        JPanel panel_1 = new JPanel();
+        panel_1.setBackground(new Color(255, 255, 255));
+        panel_1.setBorder(new TitledBorder(null, "Danh S\u00E1ch S\u1EA3n Ph\u1EA9m ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panel_1.setBounds(-1, 51, 790, 409);
+        getContentPane().add(panel_1);
+        panel_1.setLayout(null);
+
+        JLabel lblNewLabel_1 = new JLabel("Tên Sản Phẩm : ");
+        lblNewLabel_1.setForeground(Color.BLACK);
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNewLabel_1.setBounds(10, 32, 179, 22);
+        panel_1.add(lblNewLabel_1);
+
+        JLabel lblNewLabel_1_1 = new JLabel("Giá : ");
+        lblNewLabel_1_1.setForeground(Color.BLACK);
+        lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNewLabel_1_1.setBounds(10, 64, 179, 22);
+        panel_1.add(lblNewLabel_1_1);
+
+        txtTenSanPham = new JTextField();
+        txtTenSanPham.setColumns(10);
+        txtTenSanPham.setBounds(305, 35, 475, 19);
+        panel_1.add(txtTenSanPham);
+
+        txtGia = new JTextField();
+        txtGia.setColumns(10);
+        txtGia.setBounds(305, 67);
+        panel_1.add(txtGia);
+
+        JScrollPane scrollPane = new JScrollPane();
+
+
+        scrollPane.setBounds(10, 141, 770, 219);
+
+
+
+        panel_1.add(scrollPane);
+
+        tableSanPham = new JTable();
+        tableSanPham.setBackground(new Color(242, 242, 242));
+        scrollPane.setViewportView(tableSanPham);
+
+        JButton btnThemSP = new JButton("Thêm Sản Phẩm");
+        btnThemSP.setForeground(Color.WHITE);
+        btnThemSP.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnThemSP.setBackground(Color.BLACK);
+        btnThemSP.setBounds(81, 370, 179, 29);
+        panel_1.add(btnThemSP);
+
+        JButton btnSuaSP = new JButton("Sửa Sản Phẩm");
+        btnSuaSP.setForeground(Color.WHITE);
+        btnSuaSP.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnSuaSP.setBackground(Color.BLACK);
+        btnSuaSP.setBounds(305, 370, 179, 29);
+        panel_1.add(btnSuaSP);
+
+        JButton btnXoaSP = new JButton("Xóa Sản Phẩm");
+        btnXoaSP.setForeground(Color.WHITE);
+        btnXoaSP.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnXoaSP.setBackground(Color.BLACK);
+        btnXoaSP.setBounds(532, 370, 179, 29);
+        panel_1.add(btnXoaSP);
+        
+        JLabel lblNewLabel_1_1_1 = new JLabel("Hình ảnh :");
+        lblNewLabel_1_1_1.setForeground(Color.BLACK);
+        lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNewLabel_1_1_1.setBounds(10, 96, 179, 22);
+        panel_1.add(lblNewLabel_1_1_1);
+        
+        textField = new JTextField();
+        textField.setColumns(10);
+        textField.setBounds(305, 96, 475, 19);
+        panel_1.add(textField);
+
+        JButton btnThoat = new JButton("Thoát");
+        btnThoat.setForeground(Color.WHITE);
+        btnThoat.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnThoat.setBackground(Color.BLACK);
+        btnThoat.setBounds(684, 470, 95, 29);
+        getContentPane().add(btnThoat);
+
+        JButton btnLu = new JButton("Lưu");
+        btnLu.setForeground(Color.WHITE);
+        btnLu.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnLu.setBackground(Color.BLACK);
+        btnLu.setBounds(28, 470, 95, 29);
+        getContentPane().add(btnLu);
+
+        btnThemSP.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addNewProduct();
+            }
+        });
+
+        btnLu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                saveProduct();
+            }
+        });
+    }
+
+    private void loadDataToTable() {
+        Vector<Vector<Object>> data = getSanPham();
+        Vector<String> columnNames = new Vector<>();
+        columnNames.add("Mã Sản Phẩm");
+        columnNames.add("Tên Sản Phẩm");
+        columnNames.add("Giá");
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames);
+        tableSanPham.setModel(model);
+    }
+
+    private Vector<Vector<Object>> getSanPham() {
+        Vector<Vector<Object>> data = new Vector<>();
+        Connection conn = getConnection();
+
+        if (conn != null) {
+            try {
+                Statement stmt = conn.createStatement();
+                String query = "SELECT MaSanPham, Ten, Gia FROM sanpham";
+                ResultSet rs = stmt.executeQuery(query);
+
+                while (rs.next()) {
+                    Vector<Object> row = new Vector<>();
+                    row.add(rs.getInt("MaSanPham"));
+                    row.add(rs.getString("Ten"));
+                    row.add(rs.getDouble("Gia"));
+                    data.add(row);
+                }
+
+                rs.close();
+                stmt.close();
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return data;
+    }
+
+    private Connection getConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private void addNewProduct() {
+        // Clear the text fields to allow for new product entry
+        txtTenSanPham.setText("");
+        txtGia.setText("");
+        textField.setText("");
+        JOptionPane        .showInputDialog(this, "Enter new product name:");
+        String tenSanPham = txtTenSanPham.getText().trim();
+        String giaStr = txtGia.getText().trim();
+        String hinhAnh = textField.getText().trim();
+
+        if (tenSanPham.isEmpty() || giaStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter product name and price.");
+            return;
+        }
+
+        double gia = Double.parseDouble(giaStr);
+
+        if (insertProduct(tenSanPham, gia, hinhAnh)) {
+            JOptionPane.showMessageDialog(this, "Product added successfully.");
+            // Reload data in the table after adding the new product
+            loadDataToTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to add product.");
+        }
+    }
+
+    private boolean insertProduct(String tenSanPham, double gia, String hinhAnh) {
+        Connection conn = getConnection();
+
+        if (conn != null) {
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO sanpham (Ten, Gia, HinhAnh) VALUES (?, ?, ?)");
+                pstmt.setString(1, tenSanPham);
+                pstmt.setDouble(2, gia);
+                pstmt.setString(3, hinhAnh);
+                int affectedRows = pstmt.executeUpdate();
+                pstmt.close();
+                conn.close();
+                return affectedRows > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+
+    private void saveProduct() {
+        // Implement the method to save any changes made to existing products if needed
+        // This could involve updating product names, prices, or images.
+    }
+}
+

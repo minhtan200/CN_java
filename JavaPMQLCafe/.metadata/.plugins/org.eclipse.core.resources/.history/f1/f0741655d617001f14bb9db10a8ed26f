@@ -1,0 +1,205 @@
+package frmQLCafe;  // Đảm bảo khai báo package khớp với cấu trúc thư mục
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+
+public class frmTestMenu extends JFrame {
+	private static final long serialVersionUID = 1L; // Thêm serialVersionUID
+    private JTextField txtTimKiem;
+    private JTextField txtTenKH;
+    private JTextField txtSoBan;
+    private JTable tableCTDonHang;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                	frmTestMenu frame = new frmTestMenu();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public frmTestMenu() {
+        initialize();
+    }
+
+    private void initialize() {
+        setTitle("Form Quản Lý Menu");
+        setSize(1090, 780);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(Color.BLACK);
+        panel.setBounds(0, 0, 1076, 51);
+        getContentPane().add(panel);
+
+        JLabel lblHan = new JLabel("MENU");
+        lblHan.setForeground(Color.WHITE);
+        lblHan.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblHan.setBounds(483, 10, 67, 31);
+        panel.add(lblHan);
+
+        JLabel lblNewLabel_1 = new JLabel("Tìm kiếm : ");
+        lblNewLabel_1.setForeground(Color.BLACK);
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNewLabel_1.setBounds(10, 61, 75, 22);
+        getContentPane().add(lblNewLabel_1);
+
+        txtTimKiem = new JTextField();
+        txtTimKiem.setColumns(10);
+        txtTimKiem.setBounds(77, 64, 237, 19);
+        getContentPane().add(txtTimKiem);
+
+        JButton btnTimKiem = new JButton("Tìm Kiếm ");
+        btnTimKiem.setForeground(Color.WHITE);
+        btnTimKiem.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnTimKiem.setBackground(Color.BLACK);
+        btnTimKiem.setBounds(324, 61, 125, 29);
+        getContentPane().add(btnTimKiem);
+
+        JPanel panel_DSSP = new JPanel();
+        panel_DSSP.setBackground(new Color(255, 255, 255));
+        panel_DSSP.setBorder(new TitledBorder(null, "Danh S\u00E1ch S\u1EA3n Ph\u1EA9m ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panel_DSSP.setLayout(null);
+
+        JScrollPane scrollPane_DSSP = new JScrollPane(panel_DSSP);
+        scrollPane_DSSP.setBounds(10, 104, 527, 629);
+        getContentPane().add(scrollPane_DSSP);
+
+        addProductPanels(panel_DSSP);
+
+        JPanel panel_3 = new JPanel();
+        panel_3.setBackground(new Color(255, 255, 255));
+        panel_3.setBorder(new TitledBorder(null, "Chi Tiết Đơn Hàng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panel_3.setBounds(547, 61, 519, 672);
+        getContentPane().add(panel_3);
+        panel_3.setLayout(null);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(10, 21, 499, 380);
+        panel_3.add(scrollPane);
+
+        tableCTDonHang = new JTable();
+        tableCTDonHang.setBackground(new Color(242, 242, 242));
+        scrollPane.setViewportView(tableCTDonHang);
+
+        JLabel lblNewLabel_1_1 = new JLabel("Tên Khách Hàng : ");
+        lblNewLabel_1_1.setForeground(Color.BLACK);
+        lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNewLabel_1_1.setBounds(23, 422, 179, 22);
+        panel_3.add(lblNewLabel_1_1);
+
+        JLabel lblNewLabel_1_1_1 = new JLabel("Số Bàn : ");
+        lblNewLabel_1_1_1.setForeground(Color.BLACK);
+        lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNewLabel_1_1_1.setBounds(23, 454, 179, 22);
+        panel_3.add(lblNewLabel_1_1_1);
+
+        JLabel lblNewLabel_1_3 = new JLabel("Tổng Tiền :");
+        lblNewLabel_1_3.setForeground(Color.BLACK);
+        lblNewLabel_1_3.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblNewLabel_1_3.setBounds(23, 486, 179, 22);
+        panel_3.add(lblNewLabel_1_3);
+
+        txtTenKH = new JTextField();
+        txtTenKH.setColumns(10);
+        txtTenKH.setBounds(252, 425, 257, 19);
+        panel_3.add(txtTenKH);
+
+        txtSoBan = new JTextField();
+        txtSoBan.setColumns(10);
+        txtSoBan.setBounds(252, 457, 257, 19);
+        panel_3.add(txtSoBan);
+
+        JTextArea textAreaTongTien = new JTextArea();
+        textAreaTongTien.setBounds(252, 486, 257, 19);
+        panel_3.add(textAreaTongTien);
+
+        JButton btnXoaTatCa = new JButton("Xóa Tất Cả ");
+        btnXoaTatCa.setForeground(Color.WHITE);
+        btnXoaTatCa.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnXoaTatCa.setBackground(Color.BLACK);
+        btnXoaTatCa.setBounds(23, 532, 229, 47);
+        panel_3.add(btnXoaTatCa);
+
+        JButton btnThanhToan = new JButton("Thanh Toán ");
+        btnThanhToan.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        btnThanhToan.setForeground(Color.WHITE);
+        btnThanhToan.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnThanhToan.setBackground(Color.BLACK);
+        btnThanhToan.setBounds(269, 532, 229, 47);
+        panel_3.add(btnThanhToan);
+
+        JButton btnXoaSanPham = new JButton("Xóa Sản Phẩm ");
+        btnXoaSanPham.setForeground(Color.WHITE);
+        btnXoaSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnXoaSanPham.setBackground(Color.BLACK);
+        btnXoaSanPham.setBounds(23, 602, 229, 47);
+        panel_3.add(btnXoaSanPham);
+
+        JButton btnThemSanPham = new JButton("Thêm Sản Phẩm ");
+        btnThemSanPham.setForeground(Color.WHITE);
+        btnThemSanPham.setFont(new Font("Tahoma", Font.BOLD, 12));
+        btnThemSanPham.setBackground(Color.BLACK);
+        btnThemSanPham.setBounds(269, 602, 229, 47);
+        panel_3.add(btnThemSanPham);
+        btnThemSanPham.addActionListener(e -> openQuanLySanPhamForm());
+    }
+
+    private void addProductPanels(JPanel panel_DSSP) {
+        int y = 20;
+        int x = 10;
+        int width = 148;
+        int height = 193;
+        int gap = 20;
+
+        for (int i = 0; i < 10; i++) {  // Adjust the loop to add more product panels
+            JPanel productPanel = createProductPanel("Product " + (i + 1), "icon_path", "$" + (i + 1));
+            productPanel.setBounds(x, y, width, height);
+            panel_DSSP.add(productPanel);
+
+            y += height + gap;
+        }
+
+        panel_DSSP.setPreferredSize(new Dimension(527, y));
+    }
+
+    private JPanel createProductPanel(String productName, String iconPath, String price) {
+        JPanel panel = new JPanel();
+        panel.setBackground(new Color(255, 255, 255));
+        panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), productName + " " + price, TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        panel.setLayout(null);
+
+        JLabel lblProduct = new JLabel("");
+        lblProduct.setIcon(new ImageIcon(iconPath));  // Update this path to the actual icon path
+        lblProduct.setBounds(10, 22, 128, 128);
+        panel.add(lblProduct);
+
+        JSpinner spinner_Product = new JSpinner();
+        spinner_Product.setBounds(99, 157, 39, 20);
+        panel.add(spinner_Product);
+
+        return panel;
+    }
+
+    private void openQuanLySanPhamForm() {
+        frmQuanLySanPham qlspForm = new frmQuanLySanPham();
+        qlspForm.setVisible(true);
+    }
+}

@@ -1,0 +1,102 @@
+package frmQLCafe;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class frmQuanLySanPham extends JFrame {
+    private JTextField txtMaSanPham;
+    private JTextField txtTenSanPham;
+    private JTextField txtGiaSanPham;
+    private JTextField txtLinkSP;
+
+    public frmQuanLySanPham() {
+        setTitle("Form Sản Phẩm");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        JLabel lblMaSanPham = new JLabel("Mã Sản Phẩm:");
+        lblMaSanPham.setBounds(10, 20, 100, 25);
+        getContentPane().add(lblMaSanPham);
+
+        txtMaSanPham = new JTextField();
+        txtMaSanPham.setBounds(120, 20, 250, 25);
+        getContentPane().add(txtMaSanPham);
+
+        JLabel lblTenSanPham = new JLabel("Tên Sản Phẩm:");
+        lblTenSanPham.setBounds(10, 60, 100, 25);
+        getContentPane().add(lblTenSanPham);
+
+        txtTenSanPham = new JTextField();
+        txtTenSanPham.setBounds(120, 60, 250, 25);
+        getContentPane().add(txtTenSanPham);
+
+        JLabel lblGiaSanPham = new JLabel("Giá Sản Phẩm:");
+        lblGiaSanPham.setBounds(10, 100, 100, 25);
+        getContentPane().add(lblGiaSanPham);
+
+        txtGiaSanPham = new JTextField();
+        txtGiaSanPham.setBounds(120, 100, 250, 25);
+        getContentPane().add(txtGiaSanPham);
+
+        JLabel lblLinkSP = new JLabel("Link Ảnh:");
+        lblLinkSP.setBounds(10, 140, 100, 25);
+        getContentPane().add(lblLinkSP);
+
+        txtLinkSP = new JTextField();
+        txtLinkSP.setBounds(120, 140, 250, 25);
+        getContentPane().add(txtLinkSP);
+
+        JButton btnThemSanPham = new JButton("Thêm Sản Phẩm");
+        btnThemSanPham.setBounds(120, 180, 150, 30);
+        getContentPane().add(btnThemSanPham);
+
+        btnThemSanPham.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                themSanPham();
+            }
+        });
+    }
+
+    private void themSanPham() {
+        String maSanPham = txtMaSanPham.getText();
+        String tenSanPham = txtTenSanPham.getText();
+        int giaSanPham = Integer.parseInt(txtGiaSanPham.getText());
+        String linkSP = txtLinkSP.getText();
+
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cafe", "root", "");
+            String query = "INSERT INTO sanpham (MaSanPham, Ten, Gia, LinkSP) VALUES (?, ?, ?, ?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, maSanPham);
+            stmt.setString(2, tenSanPham);
+            stmt.setInt(3, giaSanPham);
+            stmt.setString(4, linkSP);
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+
+            JOptionPane.showMessageDialog(this, "Thêm sản phẩm thành công!");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Có lỗi xảy ra. Vui lòng thử lại.");
+        }
+    }
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+            	frmQuanLySanPham frame = new frmQuanLySanPham();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}
