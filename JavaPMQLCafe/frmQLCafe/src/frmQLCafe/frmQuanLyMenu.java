@@ -64,7 +64,7 @@
 		 
 		 private static final String URL = "jdbc:mysql://localhost:3306/cafe";
 		    private static final String USER = "root";  // Thay thế bằng tên người dùng MySQL của bạn
-		    private static final String PASSWORD = "minhtan2003";  // Thay thế bằng mật khẩu MySQL của bạn
+		    private static final String PASSWORD = "";  // Thay thế bằng mật khẩu MySQL của bạn
 	    
 	    public static void main(String[] args) {
 	        EventQueue.invokeLater(new Runnable() {
